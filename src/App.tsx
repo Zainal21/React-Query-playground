@@ -1,21 +1,15 @@
-import { useQuery } from "react-query";
 import PageLayout from "./layouts/page-layouts";
 import Container from "./components/ui/container";
 import { useEffect } from "react";
 import UserListSection from "./components/section/user-list-section";
-const envGithubBaseUrl: string = import.meta.env.VITE_GITHUB_BASE_URL;
+import { useUserData } from "./hooks/useGetUserDataQuery";
 
 function App() {
-  const userData = useQuery(
-    ["users"],
-    async (): Promise<any> => {
-      const response = await fetch(`${envGithubBaseUrl}/users`);
-      return await response.json();
-    },
-    {
-      enabled: false,
-    }
-  );
+  const userData = useUserData();
+
+  useEffect(() => {
+    userData.refetch();
+  }, []);
 
   useEffect(() => {
     userData.refetch();
